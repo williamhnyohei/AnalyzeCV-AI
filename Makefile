@@ -9,7 +9,10 @@ run:
 
 # Rodar os testes do backend
 test:
-	cd backend && go test ./...
+	cd backend && go test ./... -cover
+
+test-go:
+	cd backend && go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out
 
 # Atualizar as dependências Go
 tidy:

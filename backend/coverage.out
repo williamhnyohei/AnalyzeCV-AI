@@ -1,0 +1,17 @@
+mode: set
+analyze-cv-ai/cmd/server/main.go:10.13,16.2 4 0
+analyze-cv-ai/internal/storage/file.go:11.64,14.16 2 0
+analyze-cv-ai/internal/storage/file.go:14.16,16.3 1 0
+analyze-cv-ai/internal/storage/file.go:19.2,21.16 3 0
+analyze-cv-ai/internal/storage/file.go:21.16,23.3 1 0
+analyze-cv-ai/internal/storage/file.go:24.2,28.16 3 0
+analyze-cv-ai/internal/storage/file.go:28.16,30.3 1 0
+analyze-cv-ai/internal/storage/file.go:32.2,32.22 1 0
+analyze-cv-ai/internal/handler/health.go:8.58,10.2 1 0
+analyze-cv-ai/internal/handler/upload.go:10.56,15.16 3 1
+analyze-cv-ai/internal/handler/upload.go:15.16,18.3 2 0
+analyze-cv-ai/internal/handler/upload.go:19.2,22.46 2 1
+analyze-cv-ai/internal/handler/upload.go:22.46,25.3 2 0
+analyze-cv-ai/internal/handler/upload.go:28.2,29.16 2 1
+analyze-cv-ai/internal/handler/upload.go:29.16,32.3 2 0
+analyze-cv-ai/internal/handler/upload.go:34.2,34.61 1 1
