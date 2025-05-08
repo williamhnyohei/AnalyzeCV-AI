@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"analyze-cv-ai/internal/kafka"
 	"analyze-cv-ai/internal/storage"
 	"fmt"
 	"net/http"
@@ -9,7 +10,11 @@ import (
 
 func UploadPDF(w http.ResponseWriter, r *http.Request) {
 	// Limita tamanho do upload para 10 MB
-	r.ParseMultipartForm(10 << 20)
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		http.Error(w, "Erro ao processar o formulário: "+err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	file, handler, err := r.FormFile("file")
 	if err != nil {
@@ -31,5 +36,13 @@ func UploadPDF(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Arquivo salvo com sucesso: %s\n", filePath)
+	// Enviar mensagem para o Kafka
+	err = kafka.SendMessage(filePath)
+	if err != nil {
+		http.Error(w, "Erro ao enviar mensagem para o Kafka: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Responder sucesso
+	fmt.Fprintf(w, "Arquivo salvo e mensagem enviada: %s\n", filePath)
 }

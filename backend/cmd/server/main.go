@@ -2,12 +2,16 @@ package main
 
 import (
 	"analyze-cv-ai/internal/handler"
+	"analyze-cv-ai/internal/kafka"
 	"fmt"
 	"log"
 	"net/http"
 )
 
 func main() {
+	kafka.InitKafkaProducer()
+	defer kafka.CloseProducer()
+
 	http.HandleFunc("/health", handler.HealthCheck)
 	http.HandleFunc("/upload", handler.UploadPDF)
 
