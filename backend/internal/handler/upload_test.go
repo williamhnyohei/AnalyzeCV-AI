@@ -1,15 +1,31 @@
 package handler
 
 import (
+	"analyze-cv-ai/internal/kafka"
 	"bytes"
+	"context"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	segmentioKafka "github.com/segmentio/kafka-go"
 )
 
+type mockKafkaWriter struct{}
+
+func (m *mockKafkaWriter) WriteMessages(ctx context.Context, msgs ...segmentioKafka.Message) error {
+	return nil
+}
+
+func (m *mockKafkaWriter) Close() error {
+	return nil
+}
+
 func TestUploadPDF(t *testing.T) {
+	kafka.SetWriter(&mockKafkaWriter{})
+
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -18,7 +34,6 @@ func TestUploadPDF(t *testing.T) {
 		t.Fatal(err)
 	}
 	part.Write([]byte("conteudo falso de PDF"))
-
 	writer.Close()
 
 	req := httptest.NewRequest(http.MethodPost, "/upload", body)

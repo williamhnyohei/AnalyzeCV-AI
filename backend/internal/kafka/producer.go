@@ -6,22 +6,35 @@ import (
 	"log"
 	"time"
 
-	"github.com/segmentio/kafka-go"
+	kafkago "github.com/segmentio/kafka-go"
 )
 
-var writer *kafka.Writer
+type KafkaProducer interface {
+	WriteMessages(ctx context.Context, msgs ...kafkago.Message) error
+	Close() error
+}
+
+var writer KafkaProducer
 
 func InitKafkaProducer() {
-	writer = kafka.NewWriter(kafka.WriterConfig{
+	writer = kafkago.NewWriter(kafkago.WriterConfig{
 		Brokers:  []string{"localhost:9092"},
 		Topic:    "pdf-uploaded",
-		Balancer: &kafka.LeastBytes{},
+		Balancer: &kafkago.LeastBytes{},
 	})
 	fmt.Println("Kafka Producer iniciado com sucesso")
 }
 
+func SetWriter(w KafkaProducer) {
+	writer = w
+}
+
 func SendMessage(filename string) error {
-	msg := kafka.Message{
+	if writer == nil {
+		return fmt.Errorf("kafka writer não inicializado")
+	}
+
+	msg := kafkago.Message{
 		Key:   []byte(fmt.Sprintf("pdf-%d", time.Now().UnixNano())),
 		Value: []byte(filename),
 	}
