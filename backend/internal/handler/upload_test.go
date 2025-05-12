@@ -45,7 +45,7 @@ func TestUploadPDF(t *testing.T) {
 	if rr.Code != http.StatusOK {
 		t.Errorf("esperado status OK, mas recebeu %v", rr.Code)
 	}
-	if !strings.Contains(rr.Body.String(), "Arquivo salvo com sucesso") {
+	if !strings.Contains(rr.Body.String(), "Arquivo salvo e mensagem enviada:") {
 		t.Errorf("esperado resposta de sucesso, mas recebeu: %v", rr.Body.String())
 	}
 }
