@@ -1,6 +1,7 @@
 package main
 
 import (
+	"analyze-cv-ai/internal/db"
 	"analyze-cv-ai/internal/handler"
 	"analyze-cv-ai/internal/kafka"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 )
 
 func main() {
+	db.Init()
 	kafka.InitKafkaProducer()
 	defer kafka.CloseProducer()
 
