@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"analyze-cv-ai/internal/db"
 	"analyze-cv-ai/internal/kafka"
 	"analyze-cv-ai/internal/storage"
 	"fmt"
@@ -40,6 +41,13 @@ func UploadPDF(w http.ResponseWriter, r *http.Request) {
 	err = kafka.SendMessage(filePath)
 	if err != nil {
 		http.Error(w, "Erro ao enviar mensagem para o Kafka: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Salvar metadados no banco
+	err = db.SavePDF(handler.Filename, filePath)
+	if err != nil {
+		http.Error(w, "Erro ao salvar metadados no banco: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 

@@ -2,8 +2,9 @@ package db
 
 import "time"
 
-type PDFUpload struct {
-	Filename   string
-	Path       string
-	UploadTime time.Time
+type PDF struct {
+	ID        int
+	Filename  string
+	Status    string
+	CreatedAt time.Time
 }
